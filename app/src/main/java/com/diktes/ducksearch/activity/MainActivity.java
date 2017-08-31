@@ -5,22 +5,35 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.diktes.ducksearch.BaseActivity;
 import com.diktes.ducksearch.R;
+import com.diktes.ducksearch.datamodel.dto.Search;
+import com.diktes.ducksearch.network.Client;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends BaseActivity {
-
+    public static final String TAG = BaseActivity.class.getSimpleName();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        initUI();
+
+        Client.searchData(reviewCallback,"Real Madrid");
+    }
+
+    private void initUI() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,4 +65,20 @@ public class MainActivity extends BaseActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    private Callback<Search> reviewCallback = new Callback<Search>() {
+        @Override
+        public void onResponse(Call<Search> call, Response<Search> response) {
+            if (response.isSuccessful()) {
+                Log.i(TAG, "OK");
+            } else {
+                Log.i(TAG,response.message());
+            }
+        }
+        @Override
+        public void onFailure(Call<Search> call, Throwable t) {
+            Log.i(TAG, "Error: " + t.getMessage());
+        }
+    };
+
 }
