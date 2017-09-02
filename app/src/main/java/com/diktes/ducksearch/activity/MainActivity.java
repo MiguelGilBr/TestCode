@@ -3,7 +3,8 @@ package com.diktes.ducksearch.activity;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -12,28 +13,52 @@ import android.view.MenuItem;
 
 import com.diktes.ducksearch.BaseActivity;
 import com.diktes.ducksearch.R;
+import com.diktes.ducksearch.datamodel.DataModel;
 import com.diktes.ducksearch.datamodel.dto.Search;
 import com.diktes.ducksearch.network.Client;
+import com.diktes.ducksearch.ui.ResultsAdapter;
+import com.diktes.ducksearch.utils.InternetUtils;
 
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends BaseActivity {
     public static final String TAG = BaseActivity.class.getSimpleName();
+
+    protected RecyclerView mRecyclerView;
+    protected RecyclerView.LayoutManager mLayoutManager;
+    protected ResultsAdapter mAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initUI();
-
-        Client.searchData(reviewCallback,"Real Madrid");
+        callSearch("Real Madrid");
     }
 
+    private void callSearch(String value) {
+        if (InternetUtils.isInternetConnected(mContext)) {
+            showLoadingDialog();
+            DataModel.getInstance().addSearch(value);
+            Client.searchData(reviewCallback, value);
+        } else {
+
+        }
+    }
+
+    //UI
     private void initUI() {
+        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerview_results);
+        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mAdapter = new ResultsAdapter(mContext);
+        mRecyclerView.setAdapter(mAdapter);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,33 +68,35 @@ public class MainActivity extends BaseActivity {
             }
         });
     }
-
+    private void refreshData() {
+        if (mAdapter != null) {
+            mAdapter.setResults(DataModel.getInstance().getResults());
+            mAdapter.notifyDataSetChanged();
+        }
+    }
+    //MENU
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
+    //NETOWRK CALLBACK
     private Callback<Search> reviewCallback = new Callback<Search>() {
         @Override
         public void onResponse(Call<Search> call, Response<Search> response) {
+            hideLoadingDialog();
             if (response.isSuccessful()) {
+                DataModel.getInstance().setResults(response.body().getRelatedTopics());
+                refreshData();
                 Log.i(TAG, "OK");
             } else {
                 Log.i(TAG,response.message());
@@ -77,8 +104,10 @@ public class MainActivity extends BaseActivity {
         }
         @Override
         public void onFailure(Call<Search> call, Throwable t) {
+            hideLoadingDialog();
             Log.i(TAG, "Error: " + t.getMessage());
         }
     };
+
 
 }

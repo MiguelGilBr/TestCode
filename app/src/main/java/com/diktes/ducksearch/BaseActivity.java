@@ -16,16 +16,17 @@ public class BaseActivity extends AppCompatActivity {
         mContext = this;
     }
 
+    //Base Loading
     protected void showLoadingDialog() {
         mProgressDialog = new ProgressDialog(mContext);
         mProgressDialog.setMessage(getString(R.string.loading));
         mProgressDialog.show();
     }
-
     protected void hideLoadingDialog() {
         mProgressDialog.dismiss();
     }
 
+    //Navigate
     public void goToActivity(Class activityClass, Bundle b, int... flags) {
         Intent intent = new Intent(mContext, activityClass);
         intent.putExtras(b);

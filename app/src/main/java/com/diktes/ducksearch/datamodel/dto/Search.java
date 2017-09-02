@@ -17,7 +17,7 @@ public class Search {
     private Integer imageWidth;
     @SerializedName("RelatedTopics")
     @Expose
-    private List<RelatedTopic> relatedTopics = null;
+    private List<Result> relatedTopics = null;
     @SerializedName("Entity")
     @Expose
     private String entity;
@@ -66,4 +66,9 @@ public class Search {
     @SerializedName("Results")
     @Expose
     private List<Result> results = null;
+
+    //GETTERS & SETTERS
+    public List<Result> getRelatedTopics() {
+        return relatedTopics;
+    }
 }

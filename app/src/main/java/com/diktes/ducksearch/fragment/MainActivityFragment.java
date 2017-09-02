@@ -8,9 +8,6 @@ import android.view.ViewGroup;
 
 import com.diktes.ducksearch.R;
 
-/**
- * A placeholder fragment containing a simple view.
- */
 public class MainActivityFragment extends Fragment {
 
     public MainActivityFragment() {

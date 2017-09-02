@@ -16,4 +16,15 @@ public class Result {
     @SerializedName("Text")
     @Expose
     private String text;
+
+    //GETTERS
+    public Icon getIcon() {
+        return icon;
+    }
+    public String getFirstURL() {
+        return firstURL;
+    }
+    public String getText() {
+        return text;
+    }
 }
