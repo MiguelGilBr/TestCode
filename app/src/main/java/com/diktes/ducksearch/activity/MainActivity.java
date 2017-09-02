@@ -3,8 +3,6 @@ package com.diktes.ducksearch.activity;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.DialogFragment;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -26,7 +24,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements SearchDialogFragment.ISearch{
     public static final String TAG = BaseActivity.class.getSimpleName();
 
     protected RecyclerView mRecyclerView;
@@ -38,7 +36,6 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initUI();
-        callSearch("mac");
     }
 
     private void callSearch(String value) {
@@ -46,7 +43,8 @@ public class MainActivity extends BaseActivity {
             showLoadingDialog();
             Client.searchData(reviewCallback, value);
         } else {
-
+            Snackbar.make(mRecyclerView, R.string.no_internet, Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
         }
     }
 
@@ -65,12 +63,14 @@ public class MainActivity extends BaseActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DialogFragment newFragment = new SearchDialogFragment();
-                newFragment.show(getSupportFragmentManager(), "SEARCH");
-                /*Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();*/
+                searchClick();
             }
         });
+    }
+    private void searchClick() {
+        SearchDialogFragment newFragment = new SearchDialogFragment();
+        newFragment.setSearchClick(this);
+        newFragment.show(getSupportFragmentManager(), "SEARCH");
     }
     private void refreshData() {
         if (mAdapter != null) {
@@ -113,5 +113,9 @@ public class MainActivity extends BaseActivity {
         }
     };
 
-
+    //CLICK CALLBACK
+    @Override
+    public void onClick(String value) {
+        callSearch(value);
+    }
 }

@@ -14,6 +14,8 @@ import com.diktes.ducksearch.R;
 import com.diktes.ducksearch.datamodel.DataModel;
 
 public class SearchDialogFragment extends DialogFragment {
+    private ISearch searchClick;
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -30,11 +32,21 @@ public class SearchDialogFragment extends DialogFragment {
                 .setPositiveButton(R.string.button_search, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        DataModel.getInstance().addSearch(autoCompleteTextView.getText().toString());
+                        String value = autoCompleteTextView.getText().toString();
+                        searchClick.onClick(value);
+                        DataModel.getInstance().addSearch(value);
                     }
                 });
         return builder.create();
     }
 
+    //Set CLICK CALLBACK
+    public void setSearchClick(ISearch searchClick) {
+        this.searchClick = searchClick;
+    }
 
+    //CLICK INTERFACE
+    public interface ISearch {
+        void onClick(String value);
+    }
 }
