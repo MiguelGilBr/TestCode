@@ -19,13 +19,10 @@ public class ResultsAdapter extends RecyclerView.Adapter<ResultsAdapter.ViewHold
 
     private static final String TAG = ResultsAdapter.class.getSimpleName();
 
-    private Context mContext;
     private List<Result> mResults = new ArrayList<>();
 
     //CONSTRUCTOR
-    public ResultsAdapter(Context context) {
-        mContext = context;
-    }
+    public ResultsAdapter(Context context) {}
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
