@@ -3,6 +3,8 @@ package com.diktes.ducksearch.activity;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -17,6 +19,7 @@ import com.diktes.ducksearch.datamodel.DataModel;
 import com.diktes.ducksearch.datamodel.dto.Search;
 import com.diktes.ducksearch.network.Client;
 import com.diktes.ducksearch.ui.ResultsAdapter;
+import com.diktes.ducksearch.ui.SearchDialogFragment;
 import com.diktes.ducksearch.utils.InternetUtils;
 
 import retrofit2.Call;
@@ -35,13 +38,12 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initUI();
-        callSearch("Real Madrid");
+        callSearch("mac");
     }
 
     private void callSearch(String value) {
         if (InternetUtils.isInternetConnected(mContext)) {
             showLoadingDialog();
-            DataModel.getInstance().addSearch(value);
             Client.searchData(reviewCallback, value);
         } else {
 
@@ -63,8 +65,10 @@ public class MainActivity extends BaseActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                DialogFragment newFragment = new SearchDialogFragment();
+                newFragment.show(getSupportFragmentManager(), "SEARCH");
+                /*Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();*/
             }
         });
     }

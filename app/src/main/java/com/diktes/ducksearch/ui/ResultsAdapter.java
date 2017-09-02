@@ -35,16 +35,8 @@ public class ResultsAdapter extends RecyclerView.Adapter<ResultsAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
-
-        /*Picasso.with(mContext).load(Client.BASE_IMAGE_URL + mSearchResultMovie.getResults()
-                .get(position).getPosterPath())
-                .into(viewHolder.getImageView());
-        viewHolder.getImageView().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mIMovieCover.onClick(position);
-            }
-        });*/
+//        Picasso.with(mContext).load(mResults.get(position).getFirstURL())
+//                .into(viewHolder.getImageView());
 
         viewHolder.getTextViewInfo().setText(mResults.get(position).getText());
         viewHolder.getTextViewURL().setText(mResults.get(position).getFirstURL());
