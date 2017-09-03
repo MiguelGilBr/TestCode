@@ -13,4 +13,9 @@ public class Icon {
     @SerializedName("Width")
     @Expose
     private String width;
+
+    //GETTERS
+    public String getuRL() {
+        return uRL;
+    }
 }

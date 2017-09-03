@@ -35,10 +35,12 @@ public class ResultsAdapter extends RecyclerView.Adapter<ResultsAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
-        Picasso.with(mContext).load(mResults.get(position).getFirstURL())
-                .into(viewHolder.getImageView());
         viewHolder.getTextViewInfo().setText(mResults.get(position).getText());
         viewHolder.getTextViewURL().setText(mResults.get(position).getFirstURL());
+        if (!mResults.get(position).getIcon().getuRL().isEmpty()) {
+            Picasso.with(mContext).load(mResults.get(position).getIcon().getuRL())
+                    .into(viewHolder.getImageView());
+        }
     }
 
     @Override
