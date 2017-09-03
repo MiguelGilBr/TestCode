@@ -19,10 +19,13 @@ public class ResultsAdapter extends RecyclerView.Adapter<ResultsAdapter.ViewHold
 
     private static final String TAG = ResultsAdapter.class.getSimpleName();
 
+    private Context mContext;
     private List<Result> mResults = new ArrayList<>();
 
     //CONSTRUCTOR
-    public ResultsAdapter(Context context) {}
+    public ResultsAdapter(Context context) {
+        mContext = context;
+    }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
@@ -32,9 +35,8 @@ public class ResultsAdapter extends RecyclerView.Adapter<ResultsAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
-//        Picasso.with(mContext).load(mResults.get(position).getFirstURL())
-//                .into(viewHolder.getImageView());
-
+        Picasso.with(mContext).load(mResults.get(position).getFirstURL())
+                .into(viewHolder.getImageView());
         viewHolder.getTextViewInfo().setText(mResults.get(position).getText());
         viewHolder.getTextViewURL().setText(mResults.get(position).getFirstURL());
     }

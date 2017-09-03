@@ -55,6 +55,7 @@ public class MainActivity extends BaseActivity implements SearchDialogFragment.I
         mRecyclerView.setLayoutManager(mLayoutManager);
         mAdapter = new ResultsAdapter(mContext);
         mRecyclerView.setAdapter(mAdapter);
+        refreshData();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
