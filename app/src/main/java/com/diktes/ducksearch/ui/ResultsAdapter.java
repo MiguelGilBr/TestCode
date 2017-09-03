@@ -40,6 +40,8 @@ public class ResultsAdapter extends RecyclerView.Adapter<ResultsAdapter.ViewHold
         if (!mResults.get(position).getIcon().getuRL().isEmpty()) {
             Picasso.with(mContext).load(mResults.get(position).getIcon().getuRL())
                     .into(viewHolder.getImageView());
+        } else {
+            viewHolder.getImageView().setImageResource(R.mipmap.ic_launcher);
         }
     }
 
