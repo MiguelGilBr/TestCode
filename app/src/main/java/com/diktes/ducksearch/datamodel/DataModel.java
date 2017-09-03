@@ -22,6 +22,17 @@ public class DataModel {
     }
 
     //API
+    public List<Result> getAllResults (){
+        List<Result> allResults = new ArrayList<>();
+        for (Result result: results) {
+            if (result.getName() == null) {
+                allResults.add(result);
+            } else if (result.getTopics() != null){
+                allResults.addAll(result.getTopics());
+            }
+        }
+        return allResults;
+    }
     public void addSearch(String search) {
         recentSearches.add(search);
     }

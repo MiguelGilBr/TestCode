@@ -75,7 +75,7 @@ public class MainActivity extends BaseActivity implements SearchDialogFragment.I
     }
     private void refreshData() {
         if (mAdapter != null) {
-            mAdapter.setResults(DataModel.getInstance().getResults());
+            mAdapter.setResults(DataModel.getInstance().getAllResults());
             mAdapter.notifyDataSetChanged();
         }
     }
