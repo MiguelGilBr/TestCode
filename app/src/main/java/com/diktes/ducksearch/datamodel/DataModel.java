@@ -3,13 +3,16 @@ package com.diktes.ducksearch.datamodel;
 import com.diktes.ducksearch.datamodel.dto.Result;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 public class DataModel {
 
     private static DataModel instance;
+    private String lastSearch = "Real Madrid";
     private List<Result> results = new ArrayList<>();
-    private List<String> recentSearches = new ArrayList<>();
+    private HashSet<String> recentSearches = new HashSet<>();
 
     public static DataModel getInstance() {
         if (instance == null) {
@@ -39,25 +42,15 @@ public class DataModel {
     public String[] getRecentSearchArray() {
         return recentSearches.toArray(new String[0]);
     }
-    public String getLastSearch() {
-        if (recentSearches.size() > 0) {
-            return recentSearches.get(recentSearches.size()-1);
-        } else {
-            return "";
-        }
-    }
 
     //GETTERS & SETTERs
-    public List<Result> getResults() {
-        return results;
+    public String getLastSearch() {
+        return lastSearch;
+    }
+    public void setLastSearch(String lastSearch) {
+        this.lastSearch = lastSearch;
     }
     public void setResults(List<Result> results) {
         this.results = results;
-    }
-    public List<String> getRecentSearches() {
-        return recentSearches;
-    }
-    public void setRecentSearches(List<String> recentSearches) {
-        this.recentSearches = recentSearches;
     }
 }

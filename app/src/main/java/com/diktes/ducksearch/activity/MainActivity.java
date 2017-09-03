@@ -41,6 +41,7 @@ public class MainActivity extends BaseActivity implements SearchDialogFragment.I
     private void callSearch(String value) {
         if (InternetUtils.isInternetConnected(mContext)) {
             showLoadingDialog();
+            DataModel.getInstance().setLastSearch(value);
             Client.searchData(reviewCallback, value);
         } else {
             Snackbar.make(mRecyclerView, R.string.no_internet, Snackbar.LENGTH_LONG)
